@@ -7,13 +7,12 @@ import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.miro.test.pages.DashboardPage.OPEN_BOARD_CONTRAINER;
 import static com.miro.test.utils.Helpers.assertInLoop;
 import static org.testng.Assert.assertTrue;
 
 
 public class EditBoardPage extends AbstractPage {
-    private WebDriver driver;
+    private final WebDriver driver;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditBoardPage.class);
 
     public static final String BASE_CANVAS = "//div[@id='pixiCanvasContainer']//canvas[1]";
@@ -24,6 +23,7 @@ public class EditBoardPage extends AbstractPage {
     public static final String EMAIL_EDITOR_LABEL = "//label[@class='share-content__emails-editor-interactive-placeholder']";
     public static final String EMAIL_INPUT = EMAIL_EDITOR_LABEL + "/span[1]";
     public static final String SEND_EMAIL_BUTTON = "//button[@data-testid='shareMdButtonSend']";
+    public static final String BOARD_HEADER = "//div[@data-testid='board-header__logo']";
 
 
     public EditBoardPage(WebDriver driver) {
@@ -49,8 +49,6 @@ public class EditBoardPage extends AbstractPage {
 //                    .click()
 //                    .build()
 //                    .perform();
-
-
         });
         LOGGER.info("Sticker with text " + stickerText + " added to Board!!");
     }
@@ -100,7 +98,7 @@ public class EditBoardPage extends AbstractPage {
         Actions actions = new Actions(driver);
         assertInLoop(3, 5L, () -> {
             refreshPage();
-            waitUntilElementAppears(15, By.xpath(OPEN_BOARD_CONTRAINER));
+            assertTrue(waitUntilElementAppears(20, By.xpath(BOARD_HEADER)), "Canvas not loaded!");
 
             actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
                     .moveByOffset(50, 50)

@@ -5,6 +5,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
@@ -12,7 +14,8 @@ import static com.miro.test.configs.ConfigManager.getBaseUrl;
 
 public abstract class AbstractPage {
 
-    private WebDriver driver;
+    private final WebDriver driver;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPage.class);
 
     AbstractPage(WebDriver driver) {
         this.driver = driver;
@@ -33,6 +36,7 @@ public abstract class AbstractPage {
     }
 
     protected void refreshPage() {
+        LOGGER.info("Refreshing page " + getCurrentUrl());
         driver.navigate().refresh();
     }
 

@@ -6,12 +6,13 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.miro.test.pages.EditBoardPage.BOARD_HEADER;
 import static com.miro.test.utils.Helpers.assertInLoop;
 import static org.testng.Assert.assertTrue;
 
 public class DashboardPage extends AbstractPage {
 
-    private WebDriver driver;
+    private final WebDriver driver;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardPage.class);
 
@@ -32,7 +33,7 @@ public class DashboardPage extends AbstractPage {
             assertTrue(waitUntilElementAppears(10,
                     By.xpath("//canvas")), "Not able to open board " + boardName);
             assertTrue(waitUntilElementAppears(15,
-                    By.xpath("//div[@data-testid='board-header__logo']")), "Board Header not loaded!! " + boardName);
+                    By.xpath(BOARD_HEADER)), "Board Header not loaded!! " + boardName);
         });
         LOGGER.info("Board " + boardName + " opened successfully!");
     }
