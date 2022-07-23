@@ -26,9 +26,9 @@ public class StickerCreationTest extends BaseTest {
     private static final String DEFAULT_PASSWORD = "testen#123";
 
     private final WebDriver driver = getDriverInstance();
-    private LoginPage loginPage = new LoginPage(driver);
-    private DashboardPage dashboardPage = new DashboardPage(driver);
-    private EditBoardPage editBoardPage = new EditBoardPage(driver);
+    private final LoginPage loginPage = new LoginPage(driver);
+    private final DashboardPage dashboardPage = new DashboardPage(driver);
+    private final EditBoardPage editBoardPage = new EditBoardPage(driver);
 
 
     @BeforeMethod(alwaysRun = true)
