@@ -20,10 +20,11 @@
             <version>2.10.0.pr1</version>
         </dependency>
 
+
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.0.0</version>
+            <artifactId>selenium-server</artifactId>
+            <version>3.141.59</version>
         </dependency>
 
         <dependency>
@@ -38,6 +39,48 @@
             <artifactId>testng</artifactId>
             <version>7.4.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.yandex.qatools.ashot</groupId>
+            <artifactId>ashot</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <configuration>
+<!--&lt;!&ndash;                    <suiteXmlFiles>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <suiteXmlFile>${suite.xml.file}</suiteXmlFile>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </suiteXmlFiles>&ndash;&gt;-->
+<!--                    <parallel>methods</parallel>-->
+<!--                    <useUnlimitedThreads>true</useUnlimitedThreads>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
