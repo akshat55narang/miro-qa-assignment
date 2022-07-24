@@ -101,7 +101,7 @@ public class EditBoardPage extends AbstractPage {
             assertTrue(waitUntilElementAppears(20, By.xpath(BOARD_HEADER)), "Canvas not loaded!");
 
             actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
-                    .moveByOffset(50, 50)
+                    .moveByOffset(40, 50)
                     .doubleClick()
                     .build().perform();
             assertTrue(waitUntilElementAppears(5, By.xpath(NEW_STICKER_INPUT)), "Sticker not loaded");
