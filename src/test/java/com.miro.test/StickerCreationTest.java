@@ -1,5 +1,6 @@
 package com.miro.test;
 
+import com.miro.test.api.BoardApi;
 import com.miro.test.pages.DashboardPage;
 import com.miro.test.pages.EditBoardPage;
 import com.miro.test.pages.LoginPage;
@@ -12,6 +13,7 @@ import org.testng.annotations.Test;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 
+import static com.miro.test.configs.ConfigManager.getDefaultBoard;
 import static com.miro.test.pages.EditBoardPage.STICKER_PARAGRAPH;
 import static com.miro.test.utils.Helpers.areScreenshotsMatching;
 import static org.testng.Assert.assertFalse;
@@ -19,13 +21,15 @@ import static org.testng.Assert.assertFalse;
 public class StickerCreationTest extends BaseTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(StickerCreationTest.class);
 
-    private static final String BOARD = "TestBoard";
+    private static final String BOARD = getDefaultBoard();
     private static final String STICKER_TEXT = "Hello World";
     private static final String USER1_EMAIL = "vejoc34999@leupus.com";
     private static final String USER2_EMAIL = "relegat286@leupus.com";
     private static final String DEFAULT_PASSWORD = "testen#123";
 
     private final WebDriver driver = getDriverInstance();
+
+    private final BoardApi boardApi = new BoardApi();
     private final LoginPage loginPage = new LoginPage(driver);
     private final DashboardPage dashboardPage = new DashboardPage(driver);
     private final EditBoardPage editBoardPage = new EditBoardPage(driver);
@@ -34,6 +38,11 @@ public class StickerCreationTest extends BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void setup() {
         driver.manage().window().maximize();
+        if(!boardApi.isBoardPresent(BOARD)) {
+            LOGGER.info("Board with name" + BOARD + " doesnot exist. Creating via API!");
+            String board = boardApi.createBoard(BOARD);
+        }
+
     }
 
     @Test
