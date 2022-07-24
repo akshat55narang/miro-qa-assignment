@@ -17,15 +17,29 @@ public class DashboardPage extends AbstractPage {
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardPage.class);
 
     public static final String CREATE_BOARD_LABEL = "//span[text()='Create a board']";
-    public static final String OPEN_BOARD_CONTRAINER = "//div[@data-testid='dashboard__grid__board']";
+    public static final String OPEN_BOARD_CONTAINER = "//div[@data-testid='dashboard__grid__board']";
+
 
     public DashboardPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
     }
 
+    public void switchToTeam(String teamName) {
+        String xpath = "//div[@aria-label='Switch to " + teamName + " team']";
+        WebElement image = waitForElementToBeClickable(15, By.xpath(xpath + "//img"));
+        if (waitUntilElementAppears(15, By.xpath(xpath))) {
+            image.click();
+        }
+        assertTrue(waitUntilElementAppears(5, By.xpath(xpath)));
+    }
+
     public void openBoardByName(String boardName) {
-        WebElement board = waitForElement(20, By.xpath(OPEN_BOARD_CONTRAINER));
+
+        switchToTeam("miroAssignment");
+
+        WebElement board = waitForElement(20, By.xpath("//span[text()='" + boardName
+                + "']/ancestor::div[@data-testid='dashboard__grid__board']"));
 
         assertInLoop(3, 5L, () -> {
             moveToElementAndClick(board);

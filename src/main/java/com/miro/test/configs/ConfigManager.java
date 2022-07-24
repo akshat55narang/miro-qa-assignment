@@ -12,6 +12,9 @@ public class ConfigManager {
 
     private static final String BASE_URL = "base.url";
     private static final String IS_BROWSER_SHOWN = "is.browser.shown";
+    private static final String DEFAULT_ACCESS_TOKEN = "default.access.token";
+    private static final String DEFAULT_TEAM_ID = "default.team.id";
+    private static final String DEFAULT_BOARD = "default.board";
 
     private ConfigManager() {
     }
@@ -43,6 +46,18 @@ public class ConfigManager {
     public static boolean isBrowserHeadless() {
         String isBrowserShown = getParameter("isBrowserShown", getConfig(IS_BROWSER_SHOWN));
         return Boolean.parseBoolean(isBrowserShown);
+    }
+
+    public static String getDefaultAccessToken() {
+        return getParameter("defaultAccessToken", getConfig(DEFAULT_ACCESS_TOKEN));
+    }
+
+    public static String getDefaultTeamId() {
+        return getParameter("defaultTeamId", getConfig(DEFAULT_TEAM_ID));
+    }
+
+    public static String getDefaultBoard() {
+        return getParameter("defaultBoard", getConfig(DEFAULT_BOARD));
     }
 
 
