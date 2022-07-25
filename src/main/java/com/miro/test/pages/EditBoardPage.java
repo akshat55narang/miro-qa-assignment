@@ -41,14 +41,7 @@ public class EditBoardPage extends AbstractPage {
             moveToElementByOffsetAndClick(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0);
             assertTrue(waitUntilElementAppears(By.xpath(NEW_STICKER_INPUT)), "New sticker was not added ");
 
-
             addTextToSticker(stickerText);
-//            Actions actions = new Actions(driver);
-//            actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
-//                    .moveByOffset(20, 50)
-//                    .click()
-//                    .build()
-//                    .perform();
         });
         LOGGER.info("Sticker with text " + stickerText + " added to Board!!");
     }
@@ -73,11 +66,17 @@ public class EditBoardPage extends AbstractPage {
     }
 
     public void sendEmail() {
-        WebElement emailButton = waitForElementToBeClickable(5, By.xpath(SEND_EMAIL_BUTTON));
-        executeScript("arguments[0].click()", emailButton);
+        WebElement sendEmailButton = waitForElementToBeClickable(5, By.xpath(SEND_EMAIL_BUTTON));
+        executeScript("arguments[0].click()", sendEmailButton);
+
+        if (waitUntilElementAppears(3, By.xpath("//span[contains(text(), 'invalid email address')]"))) {
+            clickElementWithActionsClass(waitForElementToBeClickable(2,
+                    By.xpath("//button[@class='chip__deleteButton']")));
+            executeScript("arguments[0].click()", sendEmailButton);
+        }
         assertInLoop(3, 5L, () -> {
             assertTrue(waitUntilElementDisappears(3, By.xpath(SEND_EMAIL_BUTTON)),
-                    "Email not send!!");
+                    "Email not sent!!");
         });
 
         LOGGER.info("Email sent successfully!!");
