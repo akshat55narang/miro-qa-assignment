@@ -25,6 +25,8 @@ public class EditBoardPage extends BasePage {
     public static final String EMAIL_INPUT = EMAIL_EDITOR_LABEL + "/span[1]";
     public static final String SEND_EMAIL_BUTTON = "//button[@data-testid='shareMdButtonSend']";
     public static final String BOARD_HEADER = "//div[@data-testid='board-header__logo']";
+    private static final int X_OFFSET = 30;
+    private static final int Y_OFFSET = 30;
 
 
     public EditBoardPage(WebDriver driver) {
@@ -40,7 +42,7 @@ public class EditBoardPage extends BasePage {
             waitForElementToBeClickable(By.xpath(CREATE_STICKER_BUTTON)).click();
 
             actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
-                    .moveByOffset(30, 30)
+                    .moveByOffset(X_OFFSET, Y_OFFSET)
                     .click()
                     .build().perform();
 
@@ -105,7 +107,7 @@ public class EditBoardPage extends BasePage {
             assertTrue(waitUntilElementAppears(10, By.xpath(BOARD_HEADER)), "Canvas not loaded!");
 
             actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
-                    .moveByOffset(30, 30)
+                    .moveByOffset(X_OFFSET, Y_OFFSET)
                     .doubleClick()
                     .build().perform();
 
