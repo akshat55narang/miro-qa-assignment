@@ -16,8 +16,11 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+
 public class Base {
     private static final Logger LOGGER = LoggerFactory.getLogger(Base.class);
+    public static final String USER_DIRECTORY = System.getProperty("user.dir");
+
     protected WebDriver driver;
 
     public Base() {
@@ -47,8 +50,7 @@ public class Base {
                 String methodName = testResult.getName();
                 File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
                 try {
-                    String reportDirectory = new File(System.getProperty("user.dir")).getAbsolutePath()
-                            + "/target/surefire-reports";
+                    String reportDirectory = USER_DIRECTORY + "/target/surefire-reports";
                     File destFile = new File(reportDirectory + "/failure_screenshots/" + methodName + ".png");
                     FileUtils.copyFile(scrFile, destFile);
                     Reporter.log("<a href='" + destFile.getAbsolutePath() + "'> <img src='"

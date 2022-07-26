@@ -17,15 +17,14 @@ public class EditBoardPage extends BasePage {
 
     public static final String BASE_CANVAS = "//div[@id='pixiCanvasContainer']//canvas[1]";
     public static final String CREATE_STICKER_BUTTON = "//div[@data-plugin-id='STICKERS']";
-    public static final String NEW_STICKER_INPUT = "//div[@data-placeholder='Type something']";
+    public static final String STICKER_EDITOR_BOX = "//div[@class='editor-box']";
+    public static final String NEW_STICKER_INPUT = "//div[contains(@class,'ql-editor')]";
     public static final String STICKER_PARAGRAPH = NEW_STICKER_INPUT + "/p";
     public static final String SHARE_BUTTON_XPATH = "//button[@data-testid='share-board-button']";
     public static final String EMAIL_EDITOR_LABEL = "//label[@class='share-content__emails-editor-interactive-placeholder']";
     public static final String EMAIL_INPUT = EMAIL_EDITOR_LABEL + "/span[1]";
     public static final String SEND_EMAIL_BUTTON = "//button[@data-testid='shareMdButtonSend']";
     public static final String BOARD_HEADER = "//div[@data-testid='board-header__logo']";
-
-    public static final String USER_DIRECTORY = System.getProperty("user.dir");
 
 
     public EditBoardPage(WebDriver driver) {
@@ -44,6 +43,7 @@ public class EditBoardPage extends BasePage {
                     .moveByOffset(30, 30)
                     .click()
                     .build().perform();
+
             assertTrue(waitUntilElementAppears(By.xpath(NEW_STICKER_INPUT)), "New sticker was not added ");
 
             addTextToSticker(stickerText);
@@ -113,16 +113,9 @@ public class EditBoardPage extends BasePage {
 
             WebElement stickerInput = driver.findElement(By.xpath(NEW_STICKER_INPUT));
             selectAllText(stickerInput);
-//            String os = System.getProperty("os.name");
-//            if (os.equals("WINDOWS")){
-//                stickerInput.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-//            }else{
-//                stickerInput.sendKeys(Keys.chord(Keys.COMMAND, "a"));
-//            }
-//            driver.findElement(By.xpath(NEW_STICKER_INPUT)).
-//                    sendKeys(Keys.chord(Keys.COMMAND, "a"));
         });
+
         LOGGER.info("Sticker visible to other users!!");
-        verifyScreenshot(driver.findElement(By.xpath("//div[@class='editor-box']")));
+        verifyScreenshot(driver.findElement(By.xpath(STICKER_EDITOR_BOX)));
     }
 }

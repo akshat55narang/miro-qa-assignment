@@ -20,20 +20,21 @@ import java.time.Duration;
 
 import static com.miro.test.configs.ConfigManager.getBaseUrl;
 import static com.miro.test.configs.ConfigManager.isBrowserShown;
-import static com.miro.test.pages.EditBoardPage.USER_DIRECTORY;
 import static org.testng.Assert.assertTrue;
 
 public class BasePage {
 
     private final WebDriver driver;
     private static final Logger LOGGER = LoggerFactory.getLogger(BasePage.class);
+    public static final String USER_DIRECTORY = System.getProperty("user.dir");
+    private static final Long DRIVER_TIMEOUT = 60L;
 
     BasePage(WebDriver driver) {
         this.driver = driver;
     }
 
     private FluentWait<WebDriver> newWait() {
-        return new WebDriverWait(driver, 60L)
+        return new WebDriverWait(driver, DRIVER_TIMEOUT)
                 .pollingEvery(Duration.ofMillis(500))
                 .ignoring(StaleElementReferenceException.class);
     }
@@ -184,19 +185,19 @@ public class BasePage {
 
     protected void selectAllText(WebElement element) {
         String os = System.getProperty("os.name");
-        if (os.equals("WINDOWS")){
+        if (os.equals("WINDOWS")) {
             element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        }else{
+        } else {
             element.sendKeys(Keys.chord(Keys.COMMAND, "a"));
         }
     }
 
     protected void verifyScreenshot(WebElement element) {
-        File bef = element.getScreenshotAs(OutputType.FILE);
+        File screenshot = element.getScreenshotAs(OutputType.FILE);
 
         try {
-            BufferedImage actualImage = ImageIO.read(bef);
-            FileUtils.copyFile(bef, new File(USER_DIRECTORY + "/target/screenshots/actual.png"));
+            BufferedImage actualImage = ImageIO.read(screenshot);
+            FileUtils.copyFile(screenshot, new File(USER_DIRECTORY + "/target/screenshots/actual.png"));
 
             BufferedImage expectedImage;
             if (isBrowserShown()) {
@@ -209,8 +210,10 @@ public class BasePage {
             }
 
             ImageDiff diff = new ImageDiffer().makeDiff(actualImage, expectedImage);
-
+            BufferedImage difference = diff.getMarkedImage();
             if (diff.hasDiff()) {
+                ImageIO.write(difference, "png",
+                        new File(USER_DIRECTORY + "/target/screenshots/difference.png"));
                 Assert.fail("Expected image " + expectedImage + "is not the same as actual image " + actualImage);
             }
             assertTrue(true);

@@ -39,21 +39,21 @@ public class DashboardPage extends BasePage {
             assertTrue(waitUntilElementAppears(5, By.xpath(boardXpath)), "Team not switched!!");
             LOGGER.info("Switched to team {}", teamName);
         });
-
     }
 
     public void openBoardByName(String boardName) {
         switchToTeam("miroAssignment");
 
-        WebElement board = waitForElement(10, By.xpath("//span[text()='" + boardName + "']"));
-        executeScript("arguments[0].click()", board);
+        waitForElementToBeClickable(10, By.xpath("//span[text()='" + boardName + "']")).click();
 
         assertInLoop(3, 5L, () -> {
-            assertTrue(waitUntilElementAppears(10,
-                    By.xpath("//canvas")), "Not able to open board " + boardName);
+            if (!getCurrentUrl().contains("/app/board")) {
+                waitForElementToBeClickable(10, By.xpath("//span[text()='" + boardName + "']")).click();
+            }
             assertTrue(waitUntilElementAppears(15,
                     By.xpath(BOARD_HEADER)), "Board Header not loaded!! " + boardName);
         });
+
         LOGGER.info("Board " + boardName + " opened successfully!");
     }
 }
