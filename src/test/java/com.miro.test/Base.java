@@ -16,17 +16,18 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class BaseTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
-    protected final WebDriver driver = getDriverInstance();
+public class Base {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Base.class);
+    protected WebDriver driver;
 
-    public WebDriver getDriverInstance() {
-        return (driver == null)? DriverFactory.getDriver(DriverFactory.Browser.CHROME) : driver;
+    public Base() {
+        driver = DriverFactory.getDriver(DriverFactory.Browser.CHROME);
     }
 
     @BeforeMethod(alwaysRun = true)
-    protected void setup(Method method) {
-        LOGGER.info("********** Executing test ${method.name} **********\n\n");
+    public void setup(Method method) {
+        LOGGER.info("********** Executing test " + method.getName() + " **********\n\n");
+        //driver = DriverFactory.getDriver(DriverFactory.Browser.CHROME);
     }
 
     @AfterMethod(alwaysRun = true)
@@ -35,13 +36,13 @@ public class BaseTest {
         switch (status) {
             case 1: {
                 LOGGER.info("********** Test : " + testResult.getName()
-                        + " completed with status : " + BaseTest.TestStatus.SUCCESS + " **********\n\n");
+                        + " completed with status : " + Base.TestStatus.SUCCESS + " **********\n\n");
                 break;
             }
 
             case 2:
                 LOGGER.info("********** Test : " + testResult.getName()
-                        + " completed with status : " + BaseTest.TestStatus.FAILURE + " **********\n\n");
+                        + " completed with status : " + Base.TestStatus.FAILURE + " **********\n\n");
 
                 String methodName = testResult.getName();
                 File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
