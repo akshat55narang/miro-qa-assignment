@@ -3,9 +3,6 @@ package com.miro.test.utils;
 import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.yandex.qatools.ashot.Screenshot;
-import ru.yandex.qatools.ashot.comparison.ImageDiff;
-import ru.yandex.qatools.ashot.comparison.ImageDiffer;
 
 import java.time.Duration;
 
@@ -43,10 +40,5 @@ public class Helpers {
         }
 
         return result;
-    }
-
-    public static boolean areScreenshotsMatching(Screenshot before, Screenshot after) {
-        ImageDiff diff = new ImageDiffer().makeDiff(before, after);
-        return diff.hasDiff();
     }
 }

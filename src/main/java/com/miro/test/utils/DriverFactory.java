@@ -6,7 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static com.miro.test.configs.ConfigManager.isBrowserHeadless;
+import static com.miro.test.configs.ConfigManager.isBrowserShown;
 
 public class DriverFactory {
 
@@ -42,7 +42,7 @@ public class DriverFactory {
                 "--webdriver-loglevel=info"
         );
 
-        if (!isBrowserHeadless())
+        if (!isBrowserShown())
         chromeOptions.addArguments(
                 "--headless"
         );
