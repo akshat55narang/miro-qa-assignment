@@ -28,7 +28,17 @@ and also promote re-usability. [BasePage](src/main/java/com/miro/test/pages/Base
 ### How To Run
 From the api-test-automation-kotlin directory
 - Default configuration - `mvn clean test`
-- Override default configuration - `mvn clean test -DisBrowserShown=true`
+- Override default configuration - `mvn clean test -DbaseUrl=https://miro.com -DisBrowserShown=true -DdefaultTeamId=3458764529765127056`
+
+Default configuration is located in [default.properties](default.properties)
+The default values can be overridden from the command line, for example,
+getBaseUrl method present in [ConfigManager](src/main/java/com/miro/test/configs/ConfigManager.java)
+will return the value from [default.properties](default.properties) unless the value is supplied
+via command line - `-DbaseUrl`
+
+> public static String getBaseUrl() {
+return getParameter("baseUrl", getConfig(BASE_URL));
+}
 
 
 ### Test Artifact Location
