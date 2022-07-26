@@ -51,7 +51,7 @@ public class Base {
                 File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
                 try {
                     String reportDirectory = USER_DIRECTORY + "/target/surefire-reports";
-                    File destFile = new File(reportDirectory + "/failure_screenshots/" + methodName + ".png");
+                    File destFile = new File(reportDirectory + "/screenshots/" + methodName + ".png");
                     FileUtils.copyFile(scrFile, destFile);
                     Reporter.log("<a href='" + destFile.getAbsolutePath() + "'> <img src='"
                             + destFile.getAbsolutePath() + "' height='100' width='100'/> </a>");
