@@ -41,16 +41,18 @@
         </dependency>
 
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>4.4.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>ru.yandex.qatools.ashot</groupId>
             <artifactId>ashot</artifactId>
             <version>1.5.4</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.applitools/eyes-selenium-java3 -->
+        <dependency>
+            <groupId>com.applitools</groupId>
+            <artifactId>eyes-selenium-java3</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.slf4j</groupId>

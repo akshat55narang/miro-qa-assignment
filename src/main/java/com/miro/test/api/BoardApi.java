@@ -1,55 +1,18 @@
 package com.miro.test.api;
 
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static com.miro.test.configs.ConfigManager.getDefaultAccessToken;
 import static com.miro.test.configs.ConfigManager.getDefaultTeamId;
-import static io.restassured.RestAssured.given;
 
-public class BoardApi {
-    protected Response post(RequestSpecification requestSpecification) {
-        return given()
-                .spec(requestSpecification)
-                .when()
-                .post();
-    }
+public class BoardApi extends BaseApi {
+    private static String BASE_PATH = "/v2/boards";
 
-    protected Response post(RequestSpecification requestSpecification, String path) {
-        return given()
-                .spec(requestSpecification)
-                .when()
-                .post(path);
-    }
-
-    protected Response get(RequestSpecification requestSpecification, String path) {
-        return given()
-                .spec(requestSpecification)
-                .when()
-                .get(path);
-    }
-
-    protected Response get(RequestSpecification requestSpecification) {
-        return given()
-                .spec(requestSpecification)
-                .when()
-                .get();
-    }
-
-    private RequestSpecification baseRequest() {
-        return new RequestSpecBuilder()
-                .setBaseUri("https://api.miro.com")
-                .setBasePath("/v2/boards")
-                .addFilter(new RequestLoggingFilter())
-                .addFilter(new ResponseLoggingFilter())
-                .addHeader("Authorization", "Bearer " + getDefaultAccessToken())
-                .build();
+    public BoardApi() {
+        super(BASE_PATH);
     }
 
     public String createBoard(String boardName) {

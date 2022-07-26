@@ -11,6 +11,7 @@ import static com.miro.test.utils.Helpers.getParameter;
 public class ConfigManager {
 
     private static final String BASE_URL = "base.url";
+    private static final String API_URI = "api.uri";
     private static final String IS_BROWSER_SHOWN = "is.browser.shown";
     private static final String DEFAULT_ACCESS_TOKEN = "default.access.token";
     private static final String DEFAULT_TEAM_ID = "default.team.id";
@@ -43,7 +44,11 @@ public class ConfigManager {
         return getParameter("baseUrl", getConfig(BASE_URL));
     }
 
-    public static boolean isBrowserHeadless() {
+    public static String getApiUri() {
+        return getParameter("apiUri", getConfig(API_URI));
+    }
+
+    public static boolean isBrowserShown() {
         String isBrowserShown = getParameter("isBrowserShown", getConfig(IS_BROWSER_SHOWN));
         return Boolean.parseBoolean(isBrowserShown);
     }
@@ -59,6 +64,5 @@ public class ConfigManager {
     public static String getDefaultBoard() {
         return getParameter("defaultBoard", getConfig(DEFAULT_BOARD));
     }
-
 
 }
