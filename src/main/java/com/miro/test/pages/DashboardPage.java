@@ -6,11 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.miro.test.configs.ConfigManager.getDefaultBoard;
 import static com.miro.test.pages.EditBoardPage.BOARD_HEADER;
 import static com.miro.test.utils.Helpers.assertInLoop;
 import static org.testng.Assert.assertTrue;
 
-public class DashboardPage extends AbstractPage {
+public class DashboardPage extends BasePage {
 
     private final WebDriver driver;
 
@@ -26,24 +27,28 @@ public class DashboardPage extends AbstractPage {
     }
 
     public void switchToTeam(String teamName) {
-        String xpath = "//div[@aria-label='Switch to " + teamName + " team']";
-        WebElement image = waitForElementToBeClickable(15, By.xpath(xpath + "//img"));
-        if (waitUntilElementAppears(15, By.xpath(xpath))) {
-            image.click();
-        }
-        assertTrue(waitUntilElementAppears(5, By.xpath(xpath)));
+        String teamAriaLabel = "//div[@aria-label='Switch to " + teamName + " team']";
+        String boardXpath = "//span[text()='" + getDefaultBoard() + "']";
+        WebElement image = waitForElementToBeClickable(10, By.xpath(teamAriaLabel + "//img"));
+
+        assertInLoop(3, 5L, () -> {
+
+            if (!waitUntilElementAppears(2, By.xpath(boardXpath))) {
+                image.click();
+            }
+            assertTrue(waitUntilElementAppears(5, By.xpath(boardXpath)), "Team not switched!!");
+            LOGGER.info("Switched to team {}", teamName);
+        });
+
     }
 
     public void openBoardByName(String boardName) {
-
         switchToTeam("miroAssignment");
 
-        WebElement board = waitForElement(20, By.xpath("//span[text()='" + boardName
-                + "']/ancestor::div[@data-testid='dashboard__grid__board']"));
+        WebElement board = waitForElement(10, By.xpath("//span[text()='" + boardName + "']"));
+        executeScript("arguments[0].click()", board);
 
         assertInLoop(3, 5L, () -> {
-            moveToElementAndClick(board);
-
             assertTrue(waitUntilElementAppears(10,
                     By.xpath("//canvas")), "Not able to open board " + boardName);
             assertTrue(waitUntilElementAppears(15,

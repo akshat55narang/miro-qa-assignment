@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import static org.testng.Assert.assertTrue;
 
-public class LoginPage extends AbstractPage {
+public class LoginPage extends BasePage {
     private final WebDriver driver;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginPage.class);

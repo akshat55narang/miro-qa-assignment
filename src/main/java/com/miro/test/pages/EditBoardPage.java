@@ -11,7 +11,7 @@ import static com.miro.test.utils.Helpers.assertInLoop;
 import static org.testng.Assert.assertTrue;
 
 
-public class EditBoardPage extends AbstractPage {
+public class EditBoardPage extends BasePage {
     private final WebDriver driver;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditBoardPage.class);
 
@@ -25,6 +25,8 @@ public class EditBoardPage extends AbstractPage {
     public static final String SEND_EMAIL_BUTTON = "//button[@data-testid='shareMdButtonSend']";
     public static final String BOARD_HEADER = "//div[@data-testid='board-header__logo']";
 
+    public static final String USER_DIRECTORY = System.getProperty("user.dir");
+
 
     public EditBoardPage(WebDriver driver) {
         super(driver);
@@ -33,12 +35,15 @@ public class EditBoardPage extends AbstractPage {
 
     public void addStickerWithText(String stickerText) {
         LOGGER.info("Add sticker to Board!!");
-
+        Actions actions = new Actions(driver);
         assertInLoop(3, 5L, () -> {
 
             waitForElementToBeClickable(By.xpath(CREATE_STICKER_BUTTON)).click();
 
-            moveToElementByOffsetAndClick(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0);
+            actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
+                    .moveByOffset(30, 30)
+                    .click()
+                    .build().perform();
             assertTrue(waitUntilElementAppears(By.xpath(NEW_STICKER_INPUT)), "New sticker was not added ");
 
             addTextToSticker(stickerText);
@@ -69,12 +74,12 @@ public class EditBoardPage extends AbstractPage {
         WebElement sendEmailButton = waitForElementToBeClickable(5, By.xpath(SEND_EMAIL_BUTTON));
         executeScript("arguments[0].click()", sendEmailButton);
 
-        if (waitUntilElementAppears(3, By.xpath("//span[contains(text(), 'invalid email address')]"))) {
-            clickElementWithActionsClass(waitForElementToBeClickable(2,
-                    By.xpath("//button[@class='chip__deleteButton']")));
-            executeScript("arguments[0].click()", sendEmailButton);
-        }
         assertInLoop(3, 5L, () -> {
+            if (waitUntilElementAppears(3, By.xpath("//span[contains(text(), 'invalid email address')]"))) {
+                clickElementWithActionsClass(waitForElementToBeClickable(2,
+                        By.xpath("//button[@class='chip__deleteButton']")));
+                executeScript("arguments[0].click()", sendEmailButton);
+            }
             assertTrue(waitUntilElementDisappears(3, By.xpath(SEND_EMAIL_BUTTON)),
                     "Email not sent!!");
         });
@@ -97,15 +102,27 @@ public class EditBoardPage extends AbstractPage {
         Actions actions = new Actions(driver);
         assertInLoop(3, 5L, () -> {
             refreshPage();
-            assertTrue(waitUntilElementAppears(20, By.xpath(BOARD_HEADER)), "Canvas not loaded!");
+            assertTrue(waitUntilElementAppears(10, By.xpath(BOARD_HEADER)), "Canvas not loaded!");
 
             actions.moveToElement(waitForElementToBeClickable(By.xpath(BASE_CANVAS)), 0, 0)
-                    .moveByOffset(40, 50)
+                    .moveByOffset(30, 30)
                     .doubleClick()
                     .build().perform();
-            assertTrue(waitUntilElementAppears(5, By.xpath(NEW_STICKER_INPUT)), "Sticker not loaded");
-        });
 
+            assertTrue(waitUntilElementAppears(5, By.xpath(NEW_STICKER_INPUT)), "Sticker not loaded");
+
+            WebElement stickerInput = driver.findElement(By.xpath(NEW_STICKER_INPUT));
+            selectAllText(stickerInput);
+//            String os = System.getProperty("os.name");
+//            if (os.equals("WINDOWS")){
+//                stickerInput.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+//            }else{
+//                stickerInput.sendKeys(Keys.chord(Keys.COMMAND, "a"));
+//            }
+//            driver.findElement(By.xpath(NEW_STICKER_INPUT)).
+//                    sendKeys(Keys.chord(Keys.COMMAND, "a"));
+        });
         LOGGER.info("Sticker visible to other users!!");
+        verifyScreenshot(driver.findElement(By.xpath("//div[@class='editor-box']")));
     }
 }

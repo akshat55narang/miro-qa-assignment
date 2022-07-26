@@ -1,5 +1,6 @@
 package com.miro.test.pages;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -7,17 +8,27 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import ru.yandex.qatools.ashot.comparison.ImageDiff;
+import ru.yandex.qatools.ashot.comparison.ImageDiffer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 import static com.miro.test.configs.ConfigManager.getBaseUrl;
+import static com.miro.test.configs.ConfigManager.isBrowserShown;
+import static com.miro.test.pages.EditBoardPage.USER_DIRECTORY;
+import static org.testng.Assert.assertTrue;
 
-public abstract class AbstractPage {
+public class BasePage {
 
     private final WebDriver driver;
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPage.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasePage.class);
 
-    AbstractPage(WebDriver driver) {
+    BasePage(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -169,5 +180,42 @@ public abstract class AbstractPage {
 
     protected Object executeScript(String script, Object... objects) {
         return ((JavascriptExecutor) driver).executeScript(script, objects);
+    }
+
+    protected void selectAllText(WebElement element) {
+        String os = System.getProperty("os.name");
+        if (os.equals("WINDOWS")){
+            element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        }else{
+            element.sendKeys(Keys.chord(Keys.COMMAND, "a"));
+        }
+    }
+
+    protected void verifyScreenshot(WebElement element) {
+        File bef = element.getScreenshotAs(OutputType.FILE);
+
+        try {
+            BufferedImage actualImage = ImageIO.read(bef);
+            FileUtils.copyFile(bef, new File(USER_DIRECTORY + "/target/screenshots/actual.png"));
+
+            BufferedImage expectedImage;
+            if (isBrowserShown()) {
+                File expectedFile = new File(USER_DIRECTORY + "/src/test/resources/expected.png");
+                expectedImage = ImageIO.read(expectedFile);
+            } else {
+                File expectedFile = new File(USER_DIRECTORY + "/src/test/resources/expected_headless.png");
+                expectedImage = ImageIO.read(expectedFile);
+
+            }
+
+            ImageDiff diff = new ImageDiffer().makeDiff(actualImage, expectedImage);
+
+            if (diff.hasDiff()) {
+                Assert.fail("Expected image " + expectedImage + "is not the same as actual image " + actualImage);
+            }
+            assertTrue(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
