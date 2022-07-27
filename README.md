@@ -43,6 +43,6 @@ return getParameter("baseUrl", getConfig(BASE_URL));
 
 ### Test Artifact Location
 Test Class - com.miro.test/StickerCreationTest.java
-Failure Screen shots - target/screenshots
-Report - target/surefire-reports/index.html
+-Failure Screen shots - target/screenshots
+-Report - target/surefire-reports/index.html
 
