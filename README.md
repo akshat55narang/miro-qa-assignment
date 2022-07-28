@@ -23,10 +23,10 @@
 - BasePage and BaseApi include all wrapper methods around WebDriver and RestAssured respectively
 and also promote re-usability. [BasePage](src/main/java/com/miro/test/pages/BasePage.java) and [BaseApi](src/main/java/com/miro/test/api/BaseApi.java)
 - Extra Helper functions to provide Looped Assertions. [Helpers](src/main/java/com/miro/test/utils/Helpers.java)
-- [Base](src/test/java/com.miro.test/Base.java) class is generic class to externalize setup and tear down from each test class.
+- [Base](src/test/java/com.miro.test/Base.java) class is generic class to externalize setup and tear down from each test class [StickerCreationTest.java](src/test/java/com.miro.test/StickerCreationTest.java).
 
 ### How To Run
-From the api-test-automation-kotlin directory
+From the miro-qa-assignment directory
 - Default configuration - `mvn clean test`
 - Override default configuration - `mvn clean test -DbaseUrl=https://miro.com -DisBrowserShown=true -DdefaultTeamId=3458764529765127056`
 
